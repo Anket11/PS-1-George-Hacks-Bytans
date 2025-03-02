@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 3 Health Platform</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --primary-hover: #3367D6;
+            --secondary-color: #34A853;
+            --secondary-hover: #2E8F49;
+            --accent-color: #FBBC05;
+            --danger-color: #EA4335;
+            --border-color: #DADCE0;
+            --bg-light: #F8F9FA;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+            --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-md: 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+            --radius: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--bg-light);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding-top: 10rem; /* Increased padding-top */
+            padding-bottom: 6rem; /* Increased padding-bottom */
+            background-color: white;
+        }
+        
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .hero-content {
+            flex: 1;
+        }
+        
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .hero-title {
+            font-size: 3rem; /* Increased font size */
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        
+        .highlight {
+            color: var(--primary-color);
+        }
+        
+        .hero-description {
+            font-size: 1.25rem; /* Increased font size */
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem; /* Increased margin */
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: var(--bg-light);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+        }
+        
+        /* SDG Goals Section */
+        .sdg-goals {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .sdg-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .sdg-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+        
+        .sdg-targets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+        }
+        
+        .sdg-target {
+            padding: 1.5rem;
+            background-color: var(--bg-light);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .target-number {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .target-description {
+            color: var(--text-secondary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-description {
+            max-width: 700px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-cta {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+        }
+        
+        .btn-cta:hover {
+            background-color: var(--bg-light);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--text-primary);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section-title {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-link {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-link a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link a:hover {
+            color: white;
+        }
+        
+        .footer-copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-container {
+                flex-direction: column;
+            }
+            
+            .hero-content {
+                order: 1;
+                text-align: center;
+            }
+            
+            .hero-image {
+                order: 0;
+                justify-content: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .sdg-targets {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .sdg-targets {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    WellNest
+                </a>
+                
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link active">Home</a>
+                    <a href="dashboard.html" class="nav-link">Projects Dashboard</a>
+                    <a href="#" class="nav-link">About</a>
+                    <a href="#" class="nav-link">Resources</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Accelerating Progress on <span class="highlight">SDG 3</span> Through Technology
+                </h1>
+                <p class="hero-description">
+                    Our platform connects innovators, health experts, and technologists to build solutions that ensure healthy lives and promote well-being for all at all ages.
+                </p>
+                <div class="hero-buttons">
+                    <a href="dashboard.html" class="btn btn-primary">Explore Projects</a>
+                    <a href="#" class="btn btn-secondary">Submit Your Project</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/app/images/sdgLogo.jpeg" alt="Health technology innovation illustration">
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">How Our Platform Works</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <h3 class="feature-title">Track Health Projects</h3>
+                    <p class="feature-description">
+                        Monitor progress and impact of SDG 3 health initiatives worldwide through our interactive dashboard.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <h3 class="feature-title">Connect with Experts</h3>
+                    <p class="feature-description">
+                        Collaborate with healthcare professionals, developers, and policymakers to innovate health solutions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    <h3 class="feature-title">Measure Impact</h3>
+                    <p class="feature-description">
+                        Evaluate the effectiveness of health interventions with standardized metrics and data visualization tools.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sdg-goals">
+        <div class="container sdg-container">
+            <h2 class="section-title">SDG 3 Health Targets</h2>
+            <p class="sdg-description">
+                Sustainable Development Goal 3 aims to ensure healthy lives and promote well-being for all at all ages. Our platform focuses on leveraging technology to accelerate progress on these key targets.
+            </p>
+            
+            <div class="sdg-targets">
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.1</div>
+                    <p class="target-description">Reduce maternal mortality to less than 70 per 100,000 live births</p>
+                </div>
+                
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.2</div>
+                    <p class="target-description">End preventable deaths of newborns and children under 5 years of age</p>
+                </div>
+                
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.3</div>
+                    <p class="target-description">End the epidemics of AIDS, tuberculosis, malaria and neglected tropical diseases</p>
+                </div>
+                
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.4</div>
+                    <p class="target-description">Reduce premature mortality from non-communicable diseases</p>
+                </div>
+                
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.8</div>
+                    <p class="target-description">Achieve universal health coverage, including financial risk protection</p>
+                </div>
+                
+                <div class="sdg-target">
+                    <div class="target-number">Target 3.9</div>
+                    <p class="target-description">Reduce deaths and illnesses from hazardous chemicals and pollution</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container cta-container">
+            <h2 class="cta-title">Join Our Global Health Innovation Community</h2>
+            <p class="cta-description">
+                Whether you're developing health technologies, implementing solutions, or researching new approaches, our platform can help amplify your impact on SDG 3 goals.
+            </p>
+            <a href="dashboard.html" class="btn btn-cta">View Projects Dashboard</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-col">
+                <a href="#" class="footer-logo">WellNest</a>
+                <p class="footer-description">
+                    A platform for technology solutions supporting Sustainable Development Goal 3: Good Health and Well-being.
+                </p>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-section-title">Platform</h4>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="index.html">Home</a></li>
+                    <li class="footer-link"><a href="dashboard.html">Projects Dashboard</a></li>
+                    <li class="footer-link"><a href="#">Add Your Project</a></li>
+                    <li class="footer-link"><a href="#">Resources</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-section-title">SDG 3 Targets</h4>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">Maternal Health</a></li>
+                    <li class="footer-link"><a href="#">Child Health</a></li>
+                    <li class="footer-link"><a href="#">Infectious Diseases</a></li>
+                    <li class="footer-link"><a href="#">Non-communicable Diseases</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-section-title">Connect</h4>
+                <ul class="footer-links">
+                    <li class="footer-link"><a href="#">About Us</a></li>
+                    <li class="footer-link"><a href="#">Contact</a></li>
+                    <li class="footer-link"><a href="#">Partners</a></li>
+                    <li class="footer-link"><a href="#">Join Our Team</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="footer-copyright">
+                &copy; 2025 SDG Health Platform. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script to handle active navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentLocation = window.location.href;
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (currentLocation.includes(link.href)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

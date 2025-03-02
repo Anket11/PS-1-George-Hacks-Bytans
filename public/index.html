@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 3 Project Classification Form</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --primary-hover: #3367D6;
+            --secondary-color: #6C63FF;
+            --secondary-hover: #5A52D5;
+            --success-color: #34A853;
+            --success-hover: #2E8F49;
+            --error-color: #EA4335;
+            --border-color: #DADCE0;
+            --bg-light: #F8F9FA;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+            --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-md: 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: var(--success-hover);
+        }
+
+        .btn-icon {
+            margin-right: 0.5rem;
+            width: 16px;
+            height: 16px;
+        }
+
+        #readmePreview {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--bg-light);
+            white-space: pre-wrap;
+            display: none;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        #statusMessage {
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .category-section {
+            background-color: var(--bg-light);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .checkbox-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .checkbox-label {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .checkbox-custom {
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-input:checked+.checkbox-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-input:checked+.checkbox-custom::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 6px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 24px;
+            transition: .4s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+
+        .toggle-input:checked+.toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        .toggle-input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-label {
+            margin-left: 10px;
+            font-size: 0.875rem;
+        }
+
+        pre#jsonOutput {
+            background-color: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .checkbox-container {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>SDG 3 Project Classification and Impact Assessment</h1>
+            <p class="subtitle">Categorize open-source projects contributing to Good Health and Well-Being</p>
+
+            <div id="statusMessage"></div>
+
+            <form id="projectForm">
+                <!-- Project information fields -->
+                <div class="form-group">
+                    <label for="projectName" class="form-label">Name of the open-source project</label>
+                    <input type="text" id="projectName" name="projectName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription" class="form-label">Brief description of the project</label>
+                    <input type="text" id="projectDescription" name="projectDescription" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectURL" class="form-label">GitHub repository URL</label>
+                    <input type="url" id="projectURL" name="projectURL" class="form-control"
+                        placeholder="https://github.com/username/repo" required>
+                    <div class="btn-group">
+                        <button type="button" id="fetchReadmeBtn" class="btn btn-primary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Fetch README
+                        </button>
+                        <button type="button" id="analyzeReadmeBtn" class="btn btn-secondary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12" y2="8"></line>
+                            </svg>
+                            Analyze with AI
+                        </button>
+                    </div>
+                </div>
+
+                <div id="readmePreview">
+                    <!-- README content will be displayed here -->
+                </div>
+
+                <!-- Dynamic form elements will be inserted here -->
+                <div id="formFields"></div>
+            </form>
+
+            <button type="button" id="generateJSONBtn" class="btn btn-success">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+                Generate JSON
+            </button>
+            <button type="button" id="createPRBtn" class="btn btn-success">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+                Create PR
+            </button>
+        </div>
+
+        <div class="card">
+            <h3>Generated JSON:</h3>
+            <pre id="jsonOutput"></pre>
+        </div>
+    </div>
+
+    <script>
+        // JSON schema definition
+        const schema = {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "SDG 3 Project Classification and Impact Assessment Form",
+            "description": "A JSON schema for identifying and categorizing open-source projects that contribute to UN Sustainable Development Goal 3 (Good Health and Well-Being) using Form.io.",
+            "type": "object",
+            "properties": {
+                "projectName": {
+                    "type": "string",
+                    "description": "Name of the open-source project"
+                },
+                "projectDescription": {
+                    "type": "string",
+                    "description": "Brief description of the project"
+                },
+                "projectURL": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "GitHub repository or project website URL"
+                },
+                "healthFocusAreas": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Mental Health",
+                            "Healthcare Access",
+                            "Disease Prevention",
+                            "Nutrition & Wellness",
+                            "Emergency Response",
+                            "Medical Research",
+                            "Infectious Disease Control"
+                        ]
+                    },
+                    "description": "Areas of health the project focuses on (multi-select)"
+                },
+                "sdg3Targets": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "3.1 Reduce maternal mortality",
+                            "3.2 End preventable newborn and child deaths",
+                            "3.3 End epidemics (AIDS, TB, malaria, etc.)",
+                            "3.4 Reduce non-communicable diseases",
+                            "3.5 Strengthen mental health services",
+                            "3.6 Reduce road traffic accident deaths",
+                            "3.9 Reduce exposure to hazardous chemicals and pollution"
+                        ]
+                    },
+                    "description": "Specific SDG 3 targets addressed by the project"
+                },
+                "technologiesUsed": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Web Application",
+                            "Mobile Application",
+                            "AI/ML Model",
+                            "Database System",
+                            "Data Visualization",
+                            "Biomedical Device"
+                        ]
+                    },
+                    "description": "Technologies used in the project (multi-select)"
+                },
+                "targetAudience": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Healthcare Providers",
+                            "General Public",
+                            "Researchers",
+                            "Government Agencies",
+                            "Non-profits & NGOs"
+                        ]
+                    },
+                    "description": "Who benefits from this project? (multi-select)"
+                },
+                "isDeployed": {
+                    "type": "boolean",
+                    "description": "Is the project currently in use?"
+                },
+                "deploymentLocation": {
+                    "type": "string",
+                    "description": "Where is the project being used?",
+                    "nullable": true
+                }
+            },
+            "required": ["projectName", "projectDescription", "projectURL"],
+            "additionalProperties": false
+        };
+
+        // Global variable to store README content
+        let readmeContent = '';
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+        // Function to fill the form
+        function fillFormWithData(analysis) {
+            // First, clear all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Fill health focus areas
+            if (analysis.healthFocusAreas && analysis.healthFocusAreas.length > 0) {
+                analysis.healthFocusAreas.forEach(area => {
+                    const sanitizedArea = area.replace(/\s+/g, '_').replace(/[^\w\s]/g, '');
+                    const checkbox = document.getElementById(`healthFocusAreas_${sanitizedArea}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Fill SDG3 targets
+            if (analysis.sdg3Targets && analysis.sdg3Targets.length > 0) {
+                analysis.sdg3Targets.forEach(target => {
+                    // Get the first part of the target (e.g., "3.3" from "3.3 End epidemics")
+                    const targetPrefix = target.split(' ')[0];
+
+                    // Find checkboxes that start with this prefix
+                    document.querySelectorAll('input[name="sdg3Targets"]').forEach(checkbox => {
+                        if (checkbox.value.startsWith(targetPrefix)) {
+                            checkbox.checked = true;
+                        }
+                    });
+                });
+            }
+
+            // Fill technologies used
+            if (analysis.technologiesUsed && analysis.technologiesUsed.length > 0) {
+                analysis.technologiesUsed.forEach(tech => {
+                    const sanitizedTech = tech.replace(/\s+/g, '_').replace(/[^\w\s]/g, '');
+                    const checkbox = document.getElementById(`technologiesUsed_${sanitizedTech}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Fill target audience
+            if (analysis.targetAudience && analysis.targetAudience.length > 0) {
+                analysis.targetAudience.forEach(audience => {
+                    const sanitizedAudience = audience.replace(/\s+/g, '_').replace(/[^\w\s]/g, '');
+                    const checkbox = document.getElementById(`targetAudience_${sanitizedAudience}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Set deployment status
+            const isDeployedCheckbox = document.getElementById('isDeployed');
+            if (isDeployedCheckbox && analysis.isDeployed !== undefined) {
+                isDeployedCheckbox.checked = analysis.isDeployed;
+            }
+
+            // Set deployment location
+            const deploymentLocationInput = document.getElementById('deploymentLocation');
+            if (deploymentLocationInput && analysis.deploymentLocation) {
+                deploymentLocationInput.value = analysis.deploymentLocation;
+            }
+
+            console.log('Form has been filled with analysis results');
+        }
+        function generateForm(schema) {
+            const formFields = document.getElementById('formFields');
+            formFields.innerHTML = ''; // Clear existing fields
+
+            // Skip the first three fields as they're already defined statically
+            const skipFields = ['projectName', 'projectDescription', 'projectURL'];
+
+            for (let field in schema.properties) {
+                if (skipFields.includes(field)) continue;
+
+                const fieldData = schema.properties[field];
+
+                // Create a section for the field
+                const section = document.createElement('div');
+                section.className = 'category-section';
+
+                // Create title for the section
+                const sectionTitle = document.createElement('h3');
+                sectionTitle.className = 'category-title';
+                sectionTitle.textContent = fieldData.description || field;
+                section.appendChild(sectionTitle);
+
+                if (fieldData.type === "array") {
+                    // Create container for checkboxes
+                    const checkboxContainer = document.createElement('div');
+                    checkboxContainer.className = 'checkbox-container';
+
+                    // For array fields, create checkboxes
+                    fieldData.items.enum.forEach(option => {
+                        const checkboxItem = document.createElement('div');
+                        checkboxItem.className = 'checkbox-item';
+
+                        const label = document.createElement('label');
+                        label.className = 'checkbox-label';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.className = 'checkbox-input';
+                        checkbox.type = "checkbox";
+                        checkbox.id = `${field}_${option.replace(/\s+/g, '_').replace(/[^\w\s]/g, '')}`;
+                        checkbox.name = field;
+                        checkbox.value = option;
+
+                        const customCheckbox = document.createElement('span');
+                        customCheckbox.className = 'checkbox-custom';
+
+                        label.appendChild(checkbox);
+                        label.appendChild(customCheckbox);
+                        label.appendChild(document.createTextNode(option));
+
+                        checkboxItem.appendChild(label);
+                        checkboxContainer.appendChild(checkboxItem);
+                    });
+
+                    section.appendChild(checkboxContainer);
+
+                } else if (fieldData.type === "boolean") {
+                    const toggleContainer = document.createElement('div');
+                    toggleContainer.className = 'toggle-container';
+
+                    const toggleSwitch = document.createElement('label');
+                    toggleSwitch.className = 'toggle-switch';
+
+                    const toggleInput = document.createElement('input');
+                    toggleInput.className = 'toggle-input';
+                    toggleInput.type = "checkbox";
+                    toggleInput.id = field;
+                    toggleInput.name = field;
+
+                    const toggleSlider = document.createElement('span');
+                    toggleSlider.className = 'toggle-slider';
+
+                    const toggleLabel = document.createElement('span');
+                    toggleLabel.className = 'toggle-label';
+                    toggleLabel.textContent = 'Yes';
+
+                    toggleSwitch.appendChild(toggleInput);
+                    toggleSwitch.appendChild(toggleSlider);
+
+                    toggleContainer.appendChild(toggleSwitch);
+                    toggleContainer.appendChild(toggleLabel);
+
+                    section.appendChild(toggleContainer);
+
+                } else if (fieldData.type === "string" && field === "deploymentLocation") {
+                    const formGroup = document.createElement('div');
+                    formGroup.className = 'form-group';
+
+                    const input = document.createElement('input');
+                    input.type = "text";
+                    input.id = field;
+                    input.name = field;
+                    input.className = 'form-control';
+
+                    formGroup.appendChild(input);
+                    section.appendChild(formGroup);
+                }
+
+                // Append the section to the form
+                formFields.appendChild(section);
+            }
+        }
+        var formValues = {};
+        function downloadJson() {
+            const formValues = generateJSON();
+            // Convert JSON object to a string
+            const jsonString = JSON.stringify(formValues, null, 2);
+
+            // Display the generated JSON
+            document.getElementById('jsonOutput').textContent = jsonString;
+
+            // Create a Blob and download the JSON file
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "code.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+
+        }
+        function generateJSON() {
+            const formData = new FormData(document.getElementById('projectForm'));
+
+            // Process basic text fields
+            formValues.projectName = document.getElementById('projectName').value;
+            formValues.projectDescription = document.getElementById('projectDescription').value;
+            formValues.projectURL = document.getElementById('projectURL').value;
+
+            // For multi-select checkbox fields
+            const checkboxFields = [
+                'healthFocusAreas',
+                'sdg3Targets',
+                'technologiesUsed',
+                'targetAudience'
+            ];
+
+            checkboxFields.forEach(field => {
+                const checkboxes = document.querySelectorAll(`input[name="${field}"]:checked`);
+                formValues[field] = Array.from(checkboxes).map(checkbox => checkbox.value);
+            });
+
+            // For boolean field
+            formValues.isDeployed = document.getElementById('isDeployed').checked;
+
+            // For optional text field
+            formValues.deploymentLocation = document.getElementById('deploymentLocation').value || "";
+
+            // Convert JSON object to a string
+            const jsonString = JSON.stringify(formValues, null, 2);
+
+            // Display the generated JSON
+            document.getElementById('jsonOutput').textContent = jsonString;
+            return formValues;
+
+
+
+        }
+
+
+
+        async function createPR() {
+            const formValues = generateJSON();
+
+
+            // // Read the existing projects.json file
+            // let projects = [];
+            // try {
+            //     const response = await fetch("projects.json");
+            //     if (response.ok) {
+            //         projects = await response.json();
+            //     }
+            // } catch (error) {
+            //     console.warn("projects.json not found, creating a new one.");
+            // }
+
+            // // Append the new project data
+            // projects.push(formValues);
+
+            // // Save updated JSON file
+            // const jsonString = JSON.stringify(projects, null, 2);
+            // const blob = new Blob([jsonString], { type: "application/json" });
+            // const link = document.createElement("a");
+            // link.href = URL.createObjectURL(blob);
+            // link.download = "projects.json";
+            // document.body.appendChild(link);
+            // link.click();
+            // document.body.removeChild(link);
+
+            // console.log("Project added to projects.json");
+
+            const response = await fetch("http://localhost:3000/api/create-pr", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    "url": formValues.projectURL,
+                    "jsonData": (formValues)
+                })
+            });
+
+
+            const data = await response.json();
+
+            if (data.links && data.links.comparePrLink) {
+                window.open(data.links.comparePrLink, "_blank");
+            }
+        }
+        async function fetchReadme() {
+            const projectURL = document.getElementById('projectURL').value;
+
+            if (!projectURL) {
+                showStatus('Please enter a valid GitHub project URL.', 'error');
+                return null;
+            }
+
+            // Validate GitHub URL format
+            if (!projectURL.includes('github.com')) {
+                showStatus('Please enter a valid GitHub repository URL.', 'error');
+                return null;
+            }
+
+            showStatus('Fetching README...', 'loading');
+
+            try {
+                // Fetch README content through our proxy
+                const response = await fetch(`/api/fetch-readme?url=${encodeURIComponent(projectURL)}`);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Failed to fetch README: ${response.statusText} - ${errorData.message || ''}`);
+                }
+
+                const data = await response.json();
+                console.log('README content fetched successfully');
+
+                // Store README content in global variable
+                readmeContent = data.content;
+
+                // Show README preview
+                const readmePreview = document.getElementById('readmePreview');
+                readmePreview.textContent = readmeContent;
+                readmePreview.style.display = 'block';
+
+                showStatus('README successfully fetched!', 'success');
+                return readmeContent;
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(`Error: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        async function analyzeReadme() {
+            // If we don't have README content, try to fetch it first
+            if (!readmeContent) {
+                const content = await fetchReadme();
+                if (!content) return; // Exit if fetch failed
+            }
+
+            showStatus('Analyzing README...', 'loading');
+
+            try {
+                // Send the README content for analysis
+                const response = await fetch('/api/analyze-readme', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ readmeText: readmeContent }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Analysis failed: ${response.statusText} - ${errorData.message || ''}`);
+                }
+
+                const analysis = await response.json();
+                console.log('Analysis results:', analysis);
+
+                // Auto-fill form with the analysis results
+                fillFormWithAnalysisResults(analysis);
+
+
+                showStatus('README successfully analyzed and form filled!', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function fillFormWithAnalysisResults(analysis) {
+            // First, clear all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Fill checkboxes based on analysis results
+            if (analysis.healthFocusAreas && analysis.healthFocusAreas.length > 0) {
+                analysis.healthFocusAreas.forEach(area => {
+                    const id = `healthFocusAreas_${area.replace(/\s+/g, '_').replace(/[^\w\s]/g, '')}`;
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            if (analysis.sdg3Targets && analysis.sdg3Targets.length > 0) {
+                analysis.sdg3Targets.forEach(target => {
+                    const sanitizedTarget = target.replace(/\s+/g, '_').replace(/[^\w\s]/g, '');
+                    const checkbox = document.getElementById(`sdg3Targets_${sanitizedTarget}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            if (analysis.technologiesUsed && analysis.technologiesUsed.length > 0) {
+                analysis.technologiesUsed.forEach(tech => {
+                    const id = `technologiesUsed_${tech.replace(/\s+/g, '_').replace(/[^\w\s]/g, '')}`;
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            if (analysis.targetAudience && analysis.targetAudience.length > 0) {
+                analysis.targetAudience.forEach(audience => {
+                    const id = `targetAudience_${audience.replace(/\s+/g, '_').replace(/[^\w\s]/g, '')}`;
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // Set the boolean value
+            const isDeployedCheckbox = document.getElementById('isDeployed');
+            if (isDeployedCheckbox && analysis.isDeployed !== undefined) {
+                isDeployedCheckbox.checked = analysis.isDeployed;
+            }
+
+            // Set the deployment location
+            const deploymentLocationInput = document.getElementById('deploymentLocation');
+            if (deploymentLocationInput && analysis.deploymentLocation) {
+                deploymentLocationInput.value = analysis.deploymentLocation;
+            }
+        }
+
+        // Initialize the page
+        window.onload = function () {
+            generateForm(schema);
+
+            // Event listeners
+            document.getElementById('fetchReadmeBtn').addEventListener('click', fetchReadme);
+            document.getElementById('analyzeReadmeBtn').addEventListener('click', analyzeReadme);
+            document.getElementById('generateJSONBtn').addEventListener('click', downloadJson);
+            document.getElementById('createPRBtn').addEventListener('click', createPR);
+
+        };
+    </script>
+</body>
+
+</html>

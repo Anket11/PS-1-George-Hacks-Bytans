@@ -1,0 +1,94 @@
+{
+    "projects": [
+        {
+            "projectName": "Health Monitor Pro",
+            "projectDescription": "A comprehensive health monitoring system for tracking patient vitals and disease progression",
+            "projectURL": "https://github.com/health-monitor-pro",
+            "healthFocusAreas": [
+                "Disease Prevention",
+                "Nutrition & Wellness"
+            ],
+            "sdg3Targets": [
+                "3.4 Reduce non-communicable diseases",
+                "3.9 Reduce exposure to hazardous chemicals and pollution"
+            ],
+            "technologiesUsed": [
+                "AI/ML Model",
+                "Database System"
+            ],
+            "targetAudience": [
+                "Healthcare Providers"
+            ],
+            "isDeployed": false,
+            "deploymentLocation": "China"
+        },
+        {
+            "projectName": "NutriCare",
+            "projectDescription": "Personalized nutrition platform focused on preventive healthcare",
+            "projectURL": "https://github.com/nutricare",
+            "healthFocusAreas": [
+                "Nutrition & Wellness",
+                "Disease Prevention"
+            ],
+            "sdg3Targets": [
+                "3.4 Reduce non-communicable diseases"
+            ],
+            "technologiesUsed": [
+                "Mobile App",
+                "AI/ML Model"
+            ],
+            "targetAudience": [
+                "Healthcare Providers",
+                "General Public"
+            ],
+            "isDeployed": true,
+            "deploymentLocation": "USA, Canada, UK"
+        },
+        {
+            "projectName": "MediTrack",
+            "projectDescription": "Medical supply chain tracking system for rural healthcare facilities",
+            "projectURL": "https://github.com/meditrack",
+            "healthFocusAreas": [
+                "Healthcare Access",
+                "Medical Research"
+            ],
+            "sdg3Targets": [
+                "3.1 Reduce maternal mortality",
+                "3.2 End preventable newborn and child deaths"
+            ],
+            "technologiesUsed": [
+                "Database System",
+                "Web Application"
+            ],
+            "targetAudience": [
+                "Healthcare Providers",
+                "Government Agencies"
+            ],
+            "isDeployed": true,
+            "deploymentLocation": "Kenya, Rwanda, Uganda"
+        },
+        {
+            "projectName": "EpiTracker",
+            "projectDescription": "Real-time epidemic monitoring and prediction system",
+            "projectURL": "https://github.com/epitracker",
+            "healthFocusAreas": [
+                "Infectious Disease Control",
+                "Medical Research"
+            ],
+            "sdg3Targets": [
+                "3.3 End epidemics (AIDS, TB, malaria, etc.)"
+            ],
+            "technologiesUsed": [
+                "AI/ML Model",
+                "Data Visualization"
+            ],
+            "targetAudience": [
+                "Researchers",
+                "Government Agencies",
+                "Non-profits & NGOs"
+            ],
+            "isDeployed": true,
+            "deploymentLocation": "Global"
+        }
+    ]
+}

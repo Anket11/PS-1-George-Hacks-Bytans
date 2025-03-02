@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 3 Projects Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --primary-hover: #3367D6;
+            --secondary-color: #6C63FF;
+            --secondary-hover: #5A52D5;
+            --success-color: #34A853;
+            --success-hover: #2E8F49;
+            --error-color: #EA4335;
+            --border-color: #DADCE0;
+            --bg-light: #F8F9FA;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+            --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-md: 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+            --radius: 8px;
+            --chart-color-1: #4285F4;
+            --chart-color-2: #34A853;
+            --chart-color-3: #FBBC05;
+            --chart-color-4: #EA4335;
+            --chart-color-5: #6C63FF;
+            --chart-color-6: #36C5F0;
+            --chart-color-7: #FF6D00;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+            padding: 0;
+            margin: 0;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem auto;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .project-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-url {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        
+        .project-url:hover {
+            text-decoration: underline;
+        }
+        
+        .project-url-icon {
+            margin-right: 0.5rem;
+            width: 16px;
+            height: 16px;
+        }
+        
+        .project-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex-grow: 1;
+        }
+        
+        .info-section {
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--bg-light);
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .deployment-status {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .status-indicator.active {
+            background-color: var(--success-color);
+        }
+        
+        .status-indicator.inactive {
+            background-color: var(--error-color);
+        }
+        
+        .status-text {
+            font-size: 0.875rem;
+        }
+        
+        .deployment-location {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .search-filter-section {
+            background-color: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+        }
+        
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            min-width: 150px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--bg-light);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container, .filter-container {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1 class="page-title">SDG 3 Projects Dashboard</h1>
+                <a href="#" class="btn btn-primary">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 0.5rem;">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    Export Report
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-filter-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search projects...">
+                <button id="searchButton" class="btn btn-primary">Search</button>
+                <button id="resetButton" class="btn btn-secondary">Reset</button>
+            </div>
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label class="filter-label">Health Focus</label>
+                    <select id="healthFocusFilter" class="filter-select">
+                        <option value="">All Health Focus Areas</option>
+                        <option value="Disease Prevention">Disease Prevention</option>
+                        <option value="Nutrition & Wellness">Nutrition & Wellness</option>
+                        <option value="Healthcare Access">Healthcare Access</option>
+                        <option value="Medical Research">Medical Research</option>
+                        <option value="Infectious Disease Control">Infectious Disease Control</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">SDG Target</label>
+                    <select id="sdgTargetFilter" class="filter-select">
+                        <option value="">All SDG Targets</option>
+                        <option value="3.4">3.4 Reduce non-communicable diseases</option>
+                        <option value="3.9">3.9 Reduce exposure to hazardous chemicals</option>
+                        <option value="3.1">3.1 Reduce maternal mortality</option>
+                        <option value="3.2">3.2 End preventable child deaths</option>
+                        <option value="3.3">3.3 End epidemics</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Technology</label>
+                    <select id="technologyFilter" class="filter-select">
+                        <option value="">All Technologies</option>
+                        <option value="AI/ML Model">AI/ML Model</option>
+                        <option value="Database System">Database System</option>
+                        <option value="Web Application">Web Application</option>
+                        <option value="Mobile App">Mobile App</option>
+                        <option value="Data Visualization">Data Visualization</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Deployment Status</label>
+                    <select id="deploymentFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="true">Deployed</option>
+                        <option value="false">Not Deployed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="projectsGrid" class="projects-grid">
+            <!-- Projects will be populated here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Sample project data (your JSON)
+        async function fetchProjectData() {
+    try {
+        const response = await fetch("projects.json");
+        if (!response.ok) throw new Error("Failed to fetch project data");
+
+        const newData = await response.json();
+
+        if (JSON.stringify(newData) !== JSON.stringify(projectsData)) {
+            console.log("Project data updated, refreshing UI...");
+            projectsData = newData;
+            renderProjects(projectsData);
+        }
+    } catch (error) {
+        console.error("Error fetching project data:", error);
+    }
+}
+
+// Poll every 5 seconds
+// setInterval(fetchProjectData, 5000);
+
+        var projectsData = {
+            "projects": [
+                {
+                    "projectName": "Health Monitor Pro",
+                    "projectDescription": "A comprehensive health monitoring system for tracking patient vitals and disease progression",
+                    "projectURL": "https://github.com/health-monitor-pro",
+                    "healthFocusAreas": [
+                        "Disease Prevention",
+                        "Nutrition & Wellness"
+                    ],
+                    "sdg3Targets": [
+                        "3.4 Reduce non-communicable diseases",
+                        "3.9 Reduce exposure to hazardous chemicals and pollution"
+                    ],
+                    "technologiesUsed": [
+                        "AI/ML Model",
+                        "Database System"
+                    ],
+                    "targetAudience": [
+                        "Healthcare Providers"
+                    ],
+                    "isDeployed": false,
+                    "deploymentLocation": "China"
+                },
+                {
+                    "projectName": "NutriCare",
+                    "projectDescription": "Personalized nutrition platform focused on preventive healthcare",
+                    "projectURL": "https://github.com/nutricare",
+                    "healthFocusAreas": [
+                        "Nutrition & Wellness",
+                        "Disease Prevention"
+                    ],
+                    "sdg3Targets": [
+                        "3.4 Reduce non-communicable diseases"
+                    ],
+                    "technologiesUsed": [
+                        "Mobile App",
+                        "AI/ML Model"
+                    ],
+                    "targetAudience": [
+                        "Healthcare Providers",
+                        "General Public"
+                    ],
+                    "isDeployed": true,
+                    "deploymentLocation": "USA, Canada, UK"
+                },
+                {
+                    "projectName": "MediTrack",
+                    "projectDescription": "Medical supply chain tracking system for rural healthcare facilities",
+                    "projectURL": "https://github.com/meditrack",
+                    "healthFocusAreas": [
+                        "Healthcare Access",
+                        "Medical Research"
+                    ],
+                    "sdg3Targets": [
+                        "3.1 Reduce maternal mortality",
+                        "3.2 End preventable newborn and child deaths"
+                    ],
+                    "technologiesUsed": [
+                        "Database System",
+                        "Web Application"
+                    ],
+                    "targetAudience": [
+                        "Healthcare Providers",
+                        "Government Agencies"
+                    ],
+                    "isDeployed": true,
+                    "deploymentLocation": "Kenya, Rwanda, Uganda"
+                },
+                {
+                    "projectName": "EpiTracker",
+                    "projectDescription": "Real-time epidemic monitoring and prediction system",
+                    "projectURL": "https://github.com/epitracker",
+                    "healthFocusAreas": [
+                        "Infectious Disease Control",
+                        "Medical Research"
+                    ],
+                    "sdg3Targets": [
+                        "3.3 End epidemics (AIDS, TB, malaria, etc.)"
+                    ],
+                    "technologiesUsed": [
+                        "AI/ML Model",
+                        "Data Visualization"
+                    ],
+                    "targetAudience": [
+                        "Researchers",
+                        "Government Agencies",
+                        "Non-profits & NGOs"
+                    ],
+                    "isDeployed": true,
+                    "deploymentLocation": "Global"
+                },
+                {
+  "projectName": "Medicare",
+  "projectDescription": "dewddwcs",
+  "projectURL": "https://github.com/shahdhairya51/MediCare",
+  "healthFocusAreas": [
+    "Mental Health",
+    "Healthcare Access",
+    "Disease Prevention",
+    "Emergency Response"
+  ],
+  "sdg3Targets": [
+    "3.4 Reduce non-communicable diseases",
+    "3.5 Strengthen mental health services"
+  ],
+  "technologiesUsed": [
+    "Web Application",
+    "Mobile Application",
+    "AI/ML Model",
+    "Database System",
+    "Data Visualization"
+  ],
+  "targetAudience": [
+    "Healthcare Providers",
+    "General Public",
+    "Researchers",
+    "Government Agencies"
+  ],
+  "isDeployed": true,
+  "deploymentLocation": "MediAid is live and actively used in various regions including the USA, India, and Europe."
+}
+            ]
+        };
+        
+        // Function to create project cards
+        function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            
+            const header = document.createElement('div');
+            header.className = 'project-header';
+            
+            // Project Title and Description
+            const title = document.createElement('h3');
+            title.className = 'project-title';
+            title.textContent = project.projectName;
+            
+            const description = document.createElement('p');
+            description.className = 'project-description';
+            description.textContent = project.projectDescription;
+            
+            // Project URL
+            const url = document.createElement('a');
+            url.className = 'project-url';
+            url.href = project.projectURL;
+            url.target = '_blank';
+            
+            const urlIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            urlIcon.setAttribute('class', 'project-url-icon');
+            urlIcon.setAttribute('viewBox', '0 0 24 24');
+            urlIcon.setAttribute('fill', 'none');
+            urlIcon.setAttribute('stroke', 'currentColor');
+            urlIcon.setAttribute('stroke-width', '2');
+            urlIcon.setAttribute('stroke-linecap', 'round');
+            urlIcon.setAttribute('stroke-linejoin', 'round');
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22');
+            
+            urlIcon.appendChild(path);
+            url.appendChild(urlIcon);
+            url.appendChild(document.createTextNode(project.projectURL.replace('https://github.com/', '')));
+            
+            header.appendChild(title);
+            header.appendChild(description);
+            header.appendChild(url);
+            
+            // Project Body
+            const body = document.createElement('div');
+            body.className = 'project-body';
+            
+            // Health Focus Areas
+            const healthFocusSection = document.createElement('div');
+            healthFocusSection.className = 'info-section';
+            
+            const healthFocusTitle = document.createElement('h4');
+            healthFocusTitle.className = 'section-title';
+            healthFocusTitle.textContent = 'Health Focus Areas';
+            
+            const healthFocusTags = document.createElement('div');
+            healthFocusTags.className = 'tag-container';
+            
+            project.healthFocusAreas.forEach(area => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = area;
+                healthFocusTags.appendChild(tag);
+            });
+            
+            healthFocusSection.appendChild(healthFocusTitle);
+            healthFocusSection.appendChild(healthFocusTags);
+            
+            // SDG 3 Targets
+            const sdgSection = document.createElement('div');
+            sdgSection.className = 'info-section';
+            
+            const sdgTitle = document.createElement('h4');
+            sdgTitle.className = 'section-title';
+            sdgTitle.textContent = 'SDG 3 Targets';
+            
+            const sdgTags = document.createElement('div');
+            sdgTags.className = 'tag-container';
+            
+            project.sdg3Targets.forEach(target => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = target;
+                sdgTags.appendChild(tag);
+            });
+            
+            sdgSection.appendChild(sdgTitle);
+            sdgSection.appendChild(sdgTags);
+            
+            // Technologies Used
+            const techSection = document.createElement('div');
+            techSection.className = 'info-section';
+            
+            const techTitle = document.createElement('h4');
+            techTitle.className = 'section-title';
+            techTitle.textContent = 'Technologies Used';
+            
+            const techTags = document.createElement('div');
+            techTags.className = 'tag-container';
+            
+            project.technologiesUsed.forEach(tech => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = tech;
+                techTags.appendChild(tag);
+            });
+            
+            techSection.appendChild(techTitle);
+            techSection.appendChild(techTags);
+            
+            // Target Audience
+            const audienceSection = document.createElement('div');
+            audienceSection.className = 'info-section';
+            
+            const audienceTitle = document.createElement('h4');
+            audienceTitle.className = 'section-title';
+            audienceTitle.textContent = 'Target Audience';
+            
+            const audienceTags = document.createElement('div');
+            audienceTags.className = 'tag-container';
+            
+            project.targetAudience.forEach(audience => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = audience;
+                audienceTags.appendChild(tag);
+            });
+            
+            audienceSection.appendChild(audienceTitle);
+            audienceSection.appendChild(audienceTags);
+            
+            // Deployment Status
+            const deploymentSection = document.createElement('div');
+            deploymentSection.className = 'info-section';
+            
+            const deploymentTitle = document.createElement('h4');
+            deploymentTitle.className = 'section-title';
+            deploymentTitle.textContent = 'Deployment Status';
+            
+            const deploymentStatus = document.createElement('div');
+            deploymentStatus.className = 'deployment-status';
+            
+            const statusIndicator = document.createElement('span');
+            statusIndicator.className = project.isDeployed ? 'status-indicator active' : 'status-indicator inactive';
+            
+            const statusText = document.createElement('span');
+            statusText.className = 'status-text';
+            statusText.textContent = project.isDeployed ? 'Active - Currently Deployed' : 'Inactive - Not Deployed';
+            
+            deploymentStatus.appendChild(statusIndicator);
+            deploymentStatus.appendChild(statusText);
+            
+            const deploymentLocation = document.createElement('p');
+            deploymentLocation.className = 'deployment-location';
+            deploymentLocation.textContent = project.isDeployed ? `Deployed in: ${project.deploymentLocation}` : `Planned for: ${project.deploymentLocation}`;
+            
+            deploymentSection.appendChild(deploymentTitle);
+            deploymentSection.appendChild(deploymentStatus);
+            deploymentSection.appendChild(deploymentLocation);
+            
+            // Append all sections to the body
+            body.appendChild(healthFocusSection);
+            body.appendChild(sdgSection);
+            body.appendChild(techSection);
+            body.appendChild(audienceSection);
+            body.appendChild(deploymentSection);
+            
+            // Assemble the card
+            card.appendChild(header);
+            card.appendChild(body);
+            
+            return card;
+        }
+        
+        // Function to render all projects
+        function renderProjects(projects) {
+            const projectsGrid = document.getElementById('projectsGrid');
+            projectsGrid.innerHTML = '';
+            
+            if (projects.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.textContent = 'No projects found matching your criteria.';
+                projectsGrid.appendChild(noResults);
+                return;
+            }
+            
+            projects.forEach(project => {
+                const card = createProjectCard(project);
+                projectsGrid.appendChild(card);
+            });
+        }
+        
+        // Function to filter projects based on search and filter criteria
+        function filterProjects() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const healthFocus = document.getElementById('healthFocusFilter').value;
+            const sdgTarget = document.getElementById('sdgTargetFilter').value;
+            const technology = document.getElementById('technologyFilter').value;
+            const deploymentStatus = document.getElementById('deploymentFilter').value;
+            
+            const filteredProjects = projectsData.projects.filter(project => {
+                // Search term filter (check if search term is in project name or description)
+                const matchesSearch = searchTerm === '' || 
+                    project.projectName.toLowerCase().includes(searchTerm) || 
+                    project.projectDescription.toLowerCase().includes(searchTerm);
+                
+                // Health focus filter
+                const matchesHealthFocus = healthFocus === '' || 
+                    project.healthFocusAreas.includes(healthFocus);
+                
+                // SDG target filter
+                const matchesSdgTarget = sdgTarget === '' || 
+                    project.sdg3Targets.some(target => target.startsWith(sdgTarget));
+                
+                // Technology filter
+                const matchesTechnology = technology === '' || 
+                    project.technologiesUsed.includes(technology);
+                
+                // Deployment status filter
+                const matchesDeployment = deploymentStatus === '' || 
+                    project.isDeployed.toString() === deploymentStatus;
+                
+                return matchesSearch && matchesHealthFocus && matchesSdgTarget && 
+                       matchesTechnology && matchesDeployment;
+            });
+            
+            renderProjects(filteredProjects);
+        }
+        
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render all projects initially
+            renderProjects(projectsData.projects);
+            
+            // Add event listeners for search and filters
+            document.getElementById('searchButton').addEventListener('click', filterProjects);
+            document.getElementById('searchInput').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    filterProjects();
+                }
+            });
+            
+            document.getElementById('healthFocusFilter').addEventListener('change', filterProjects);
+            document.getElementById('sdgTargetFilter').addEventListener('change', filterProjects);
+            document.getElementById('technologyFilter').addEventListener('change', filterProjects);
+            document.getElementById('deploymentFilter').addEventListener('change', filterProjects);
+            
+            document.getElementById('resetButton').addEventListener('click', function() {
+                // Reset all filters and search
+                document.getElementById('searchInput').value = '';
+                document.getElementById('healthFocusFilter').value = '';
+                document.getElementById('sdgTargetFilter').value = '';
+                document.getElementById('technologyFilter').value = '';
+                document.getElementById('deploymentFilter').value = '';
+                
+                // Show all projects
+                renderProjects(projectsData.projects);
+            });
+        });
+    </script>
+</body>
+
+</html>

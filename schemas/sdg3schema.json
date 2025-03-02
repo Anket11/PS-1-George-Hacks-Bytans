@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "SDG 3 Project Classification and Impact Assessment Form",
+    "description": "A JSON schema for identifying and categorizing open-source projects that contribute to UN Sustainable Development Goal 3 (Good Health and Well-Being) using Form.io.",
+    "type": "object",
+    "properties": {
+        "projectName": {
+            "type": "string",
+            "description": "Name of the open-source project"
+        },
+        "projectDescription": {
+            "type": "string",
+            "description": "Brief description of the project"
+        },
+        "projectURL": {
+            "type": "string",
+            "format": "uri",
+            "description": "GitHub repository or project website URL"
+        },
+        "healthFocusAreas": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "Mental Health",
+                    "Healthcare Access",
+                    "Disease Prevention",
+                    "Nutrition & Wellness",
+                    "Emergency Response",
+                    "Medical Research",
+                    "Infectious Disease Control"
+                ]
+            },
+            "description": "Areas of health the project focuses on (multi-select)"
+        },
+        "sdg3Targets": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "3.1 Reduce maternal mortality",
+                    "3.2 End preventable newborn and child deaths",
+                    "3.3 End epidemics (AIDS, TB, malaria, etc.)",
+                    "3.4 Reduce non-communicable diseases",
+                    "3.5 Strengthen mental health services",
+                    "3.6 Reduce road traffic accident deaths",
+                    "3.9 Reduce exposure to hazardous chemicals and pollution"
+                ]
+            },
+            "description": "Specific SDG 3 targets addressed by the project"
+        },
+        "technologiesUsed": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "Web Application",
+                    "Mobile Application",
+                    "AI/ML Model",
+                    "Database System",
+                    "Data Visualization",
+                    "Biomedical Device"
+                ]
+            },
+            "description": "Technologies used in the project (multi-select)"
+        },
+        "targetAudience": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "Healthcare Providers",
+                    "General Public",
+                    "Researchers",
+                    "Government Agencies",
+                    "Non-profits & NGOs"
+                ]
+            },
+            "description": "Who benefits from this project? (multi-select)"
+        },
+        "isDeployed": {
+            "type": "boolean",
+            "description": "Is the project currently in use?"
+        },
+        "deploymentLocation": {
+            "type": "string",
+            "description": "Where is the project being used?",
+            "nullable": true
+        }
+    },
+    "required": ["projectName", "projectDescription", "projectURL"],
+    "additionalProperties": false
+}
