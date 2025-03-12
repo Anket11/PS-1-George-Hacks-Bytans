@@ -1,4 +1,4 @@
-# **Health & Well-Being Open Source Discovery**  
+# **WellNest - Health & Well-Being Open Source Discovery**  
 
 ## **Overview**  
 The **Health & Well-Being Open Source Discovery** project helps open-source maintainers and contributors align their projects with the **United Nations' Sustainable Development Goals (SDGs)**, specifically **SDG 3: Good Health and Well-Being**.  
